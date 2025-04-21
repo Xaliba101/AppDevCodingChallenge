@@ -52,7 +52,49 @@ namespace AppDevCodingChallenge
                 return;
             }
 
-            
+
+            // Load devices from CSV
+            using var devicesReader = new StreamReader(devicesFilePath);
+            using var devCsv = new CsvReader(devicesReader, CultureInfo.InvariantCulture);
+
+            // Load device readings from CSV
+            var deviceReadings = devCsv.GetRecords<Device>();
+
+            // Initialize a list to store all joined and grouped data
+            var allGroupedData = new List<IGrouping<dynamic, dynamic>>();
+
+            // For each readings file, stream readings and do a LINQ Join
+            foreach (var dataFile in deviceReadingsFiles)
+            {
+                // Read the device readings file
+                using var dataReader = new StreamReader(dataFile);
+                using var dataCsv = new CsvReader(dataReader, CultureInfo.InvariantCulture);
+
+                // Load device readings from CSV
+                var readings = dataCsv.GetRecords<Reading>().ToList();
+
+                // Join the device readings with the devices
+                var joinedData = from reading in readings
+                                 join device in deviceReadings on reading.DeviceID equals device.DeviceID
+                                 select new
+                                 {
+                                     DeviceID = device.DeviceID,
+                                     DeviceName = device.DeviceName,
+                                     Location = device.Location,
+                                     Time = reading.Time,
+                                     Rainfall = reading.Rainfall
+                                 };
+
+                // Group by device and add to the collection
+                var groupedDataFromFile = joinedData.GroupBy(x => new { x.DeviceID, x.DeviceName, x.Location }).ToList();
+                allGroupedData.AddRange(groupedDataFromFile);
+            }
+
+            // DIsplay grouped data
+            foreach (var group in allGroupedData)
+            {
+                Console.WriteLine($"Device ID: {group.Key.DeviceID}, Device Name: {group.Key.DeviceName}, Location: {group.Key.Location}, Number of readings: {group.Count()}");
+            }
 
 
 
