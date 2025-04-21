@@ -97,24 +97,43 @@ namespace AppDevCodingChallenge
             foreach (var group in allGroupedData)
             {
                 // Display the device information and the number of readings
-                Console.WriteLine($"Device ID: {group.Key.DeviceID}, Device Name: {group.Key.DeviceName}, Location: {group.Key.Location}, Number of readings: {group.Count()}");
-                
+                Console.WriteLine($"Device ID: \t{group.Key.DeviceID}");
+                Console.WriteLine($"Device Name: \t{group.Key.DeviceName}");
+                Console.WriteLine($"Location: \t{group.Key.Location}");
+                Console.WriteLine($"Number of readings: \t{group.Count()}");
+
                 // Get the last 4 hours of data
                 var last4HoursData = group.Where(x => x.Time >= assumedCurrentDateTime.AddHours(-4)).ToList();
-                
+
                 // Check if there is any data in the last 4 hours
                 if (last4HoursData.Count == 0)
                 {
-                    Console.WriteLine("No data in the last 4 hours.");
+                    Console.WriteLine("Average rainfall: \tNo Data found");
                     continue;
                 }
 
-                // output the last 4 hours of data
-                Console.WriteLine("Last 4 hours of data:");
-                foreach (var reading in last4HoursData)
+                // Get average rainfall
+                double averageRainfall = last4HoursData.Average(x => x.Rainfall);
+
+                // Check if any single reading is over 30
+                bool anyRainfallOver30 = last4HoursData.Any(x => x.Rainfall > 30);
+
+                // Apply the status rules
+                if (averageRainfall >= 15 || anyRainfallOver30)
                 {
-                    Console.WriteLine($"Time: {reading.Time}, Rainfall: {reading.Rainfall}");
+                    Console.WriteLine("Average rainfall: \tRed");
                 }
+                else if (averageRainfall >= 10 && averageRainfall < 15)
+                {
+                    Console.WriteLine("Average rainfall: \tAmber");
+                }
+                else 
+                {
+                    Console.WriteLine("Average rainfall: \tGreen");
+                }
+
+                // Display blank line for readability
+                Console.WriteLine();
             }
 
 
@@ -122,8 +141,8 @@ namespace AppDevCodingChallenge
 
 
             // Completed
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
+            //Console.WriteLine("Press any key to exit...");
+            //Console.ReadKey();
         }
     }
 }
