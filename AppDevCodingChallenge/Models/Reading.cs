@@ -7,7 +7,7 @@ using CsvHelper.Configuration.Attributes;
 
 namespace AppDevCodingChallenge.Models
 {
-    internal class Readings
+    internal class Reading
     {
         [Name("Device ID")]
         public int DeviceID { get; set; }
