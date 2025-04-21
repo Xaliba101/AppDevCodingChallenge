@@ -60,7 +60,7 @@ namespace AppDevCodingChallenge
             // Load device readings from CSV
             var deviceReadings = devCsv.GetRecords<Device>();
 
-            // Initialize a list to store all joined and grouped data
+            // Initialise a list to store all joined and grouped data
             var allGroupedData = new List<IGrouping<dynamic, dynamic>>();
 
             // For each readings file, stream readings and do a LINQ Join
@@ -90,9 +90,10 @@ namespace AppDevCodingChallenge
                 allGroupedData.AddRange(groupedDataFromFile);
             }
 
-            // DIsplay grouped data
+            // Display grouped data
             foreach (var group in allGroupedData)
             {
+                // Display the device information and the number of readings
                 Console.WriteLine($"Device ID: {group.Key.DeviceID}, Device Name: {group.Key.DeviceName}, Location: {group.Key.Location}, Number of readings: {group.Count()}");
             }
 
