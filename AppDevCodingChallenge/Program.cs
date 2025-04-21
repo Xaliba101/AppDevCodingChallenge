@@ -63,8 +63,8 @@ namespace AppDevCodingChallenge
             // Load device readings from CSV
             var deviceReadings = devCsv.GetRecords<Device>();
 
-            // Initialise a list to store all joined and grouped data
-            var allGroupedData = new List<IGrouping<dynamic, dynamic>>();
+            // Initialise a list to store all joined readings
+            var allJoinedReadings = new List<dynamic>();
 
             // For each readings file, stream readings and do a LINQ Join
             foreach (var dataFile in deviceReadingsFiles)
@@ -88,19 +88,23 @@ namespace AppDevCodingChallenge
                                      Rainfall = reading.Rainfall
                                  };
 
-                // Group by device and add to the collection
-                var groupedDataFromFile = joinedData.GroupBy(x => new { x.DeviceID, x.DeviceName, x.Location }).ToList();
-                allGroupedData.AddRange(groupedDataFromFile);
+                // Add the joined data to the list
+                allJoinedReadings.AddRange(joinedData);
             }
+
+            // Group all the data now that all files are processed
+            var allGroupedData = allJoinedReadings
+                .GroupBy(x => new { x.DeviceID, x.DeviceName, x.Location })
+                .ToList();
 
             // Display grouped data
             foreach (var group in allGroupedData)
             {
                 // Display the device information and the number of readings
-                Console.WriteLine($"Device ID: \t{group.Key.DeviceID}");
-                Console.WriteLine($"Device Name: \t{group.Key.DeviceName}");
-                Console.WriteLine($"Location: \t{group.Key.Location}");
-                Console.WriteLine($"Number of readings: \t{group.Count()}");
+                Console.WriteLine($"Device ID: \t\t{group.Key.DeviceID}");
+                Console.WriteLine($"Device Name: \t\t{group.Key.DeviceName}");
+                Console.WriteLine($"Location: \t\t{group.Key.Location}");
+                Console.WriteLine($"Total Readings: \t{group.Count()}");
 
                 // Get the last 4 hours of data
                 var last4HoursData = group.Where(x => x.Time >= assumedCurrentDateTime.AddHours(-4)).ToList();
