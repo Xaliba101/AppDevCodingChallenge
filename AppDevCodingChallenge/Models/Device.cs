@@ -7,6 +7,9 @@ using CsvHelper.Configuration.Attributes;
 
 namespace AppDevCodingChallenge.Models
 {
+    /// <summary>
+    /// Simple class to represent a device from the CSV file.
+    /// </summary>
     internal class Device
     {
         [Name("Device ID")]

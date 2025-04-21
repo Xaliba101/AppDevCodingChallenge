@@ -22,6 +22,9 @@ namespace AppDevCodingChallenge.Models
         public int Rainfall { get; set; }
     }
 
+    /// <summary>
+    /// ClassMap for Reading class to map CSV columns to properties.
+    /// </summary>
     public class  ReadingMap : CsvHelper.Configuration.ClassMap<Reading>
     {
         public ReadingMap()
