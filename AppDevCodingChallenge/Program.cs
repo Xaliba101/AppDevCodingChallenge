@@ -8,21 +8,16 @@ namespace AppDevCodingChallenge
 {
     internal class Program
     {
+        /// <summary>
+        /// Main method to run the flood detection programme.
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
-            /* quick list of what to do, not final:
-             * display welcome message
-             * check csv files exists
-             * read csv files
-             * group by devices
-             * get last 4 hours of data for each device and display:
-             * Average rainfall
-             * Green, amber or red
-             * is avergate rainfall increasing or decreasing
-             */
-
+            // Display the company name and programme name
             Console.WriteLine("Fuzion Inc");
             Console.WriteLine("Flood detection programme");
+            Console.WriteLine("======================================");
 
             // Initialise and set the assumedCurrentTime to 2pm based on the latest data from data files.
             DateTime assumedCurrentDateTime = new DateTime(2020, 5, 6, 14, 0, 0);
@@ -105,7 +100,8 @@ namespace AppDevCodingChallenge
                 Console.WriteLine($"Device ID: \t\t{group.Key.DeviceID}");
                 Console.WriteLine($"Device Name: \t\t{group.Key.DeviceName}");
                 Console.WriteLine($"Location: \t\t{group.Key.Location}");
-                Console.WriteLine($"Total Readings: \t{group.Count()}");
+                //Console.WriteLine($"Total Readings: \t{group.Count()}");
+
 
                 // Get the last 4 hours of data
                 var last4HoursData = group
@@ -129,17 +125,16 @@ namespace AppDevCodingChallenge
                 // Apply the status rules
                 if (averageRainfall >= 15 || anyRainfallOver30)
                 {
-                    Console.WriteLine("Average rainfall: \tRed");
+                    Console.WriteLine($"Average rainfall: \t{averageRainfall}mm (Red)");
                 }
                 else if (averageRainfall >= 10 && averageRainfall < 15)
                 {
-                    Console.WriteLine("Average rainfall: \tAmber");
+                    Console.WriteLine($"Average rainfall: \t{averageRainfall}mm (Amber)");
                 }
                 else 
                 {
-                    Console.WriteLine("Average rainfall: \tGreen");
+                    Console.WriteLine($"Average rainfall: \t{averageRainfall}mm (Green)");
                 }
-
 
                 // Get the rainfall data for the last 4 hours
                 var rainfallTrend = last4HoursData
@@ -176,18 +171,9 @@ namespace AppDevCodingChallenge
                     Console.WriteLine("Rainfall trend: \tStable");
                 }
 
-                // Display blank line for readability
-                Console.WriteLine();
-                
+                // Output separator
+                Console.WriteLine("=======================================");
             }
-
-
-
-
-
-            // Completed
-            //Console.WriteLine("Press any key to exit...");
-            //Console.ReadKey();
         }
     }
 }
