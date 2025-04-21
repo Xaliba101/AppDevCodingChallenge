@@ -24,7 +24,7 @@ namespace AppDevCodingChallenge
             Console.WriteLine("Flood detection programme");
 
             // Initialise and set the assumedCurrentTime to 2pm based on the latest data from data files.
-            DateTime assumedCurrentDateTime = new DateTime(2020, 6, 5, 14, 0, 0);
+            DateTime assumedCurrentDateTime = new DateTime(2020, 5, 6, 14, 0, 0);
 
             // set up file and folder paths
             string devicesFilePath = "Data/devices.csv";
@@ -98,6 +98,23 @@ namespace AppDevCodingChallenge
             {
                 // Display the device information and the number of readings
                 Console.WriteLine($"Device ID: {group.Key.DeviceID}, Device Name: {group.Key.DeviceName}, Location: {group.Key.Location}, Number of readings: {group.Count()}");
+                
+                // Get the last 4 hours of data
+                var last4HoursData = group.Where(x => x.Time >= assumedCurrentDateTime.AddHours(-4)).ToList();
+                
+                // Check if there is any data in the last 4 hours
+                if (last4HoursData.Count == 0)
+                {
+                    Console.WriteLine("No data in the last 4 hours.");
+                    continue;
+                }
+
+                // output the last 4 hours of data
+                Console.WriteLine("Last 4 hours of data:");
+                foreach (var reading in last4HoursData)
+                {
+                    Console.WriteLine($"Time: {reading.Time}, Rainfall: {reading.Rainfall}");
+                }
             }
 
 
