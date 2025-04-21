@@ -19,7 +19,7 @@ namespace AppDevCodingChallenge.Models
         public DateTime Time { get; set; }
 
         [Name("Rainfall")]
-        public double Rainfall { get; set; }
+        public int Rainfall { get; set; }
     }
 
     public class  ReadingMap : CsvHelper.Configuration.ClassMap<Reading>
