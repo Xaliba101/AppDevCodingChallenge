@@ -1,5 +1,6 @@
 ﻿using System.Formats.Asn1;
 using System.Globalization;
+using System.Linq;
 using AppDevCodingChallenge.Models;
 using CsvHelper;
 
@@ -107,7 +108,10 @@ namespace AppDevCodingChallenge
                 Console.WriteLine($"Total Readings: \t{group.Count()}");
 
                 // Get the last 4 hours of data
-                var last4HoursData = group.Where(x => x.Time >= assumedCurrentDateTime.AddHours(-4)).ToList();
+                var last4HoursData = group
+                    .Where(x => x.Time >= assumedCurrentDateTime
+                    .AddHours(-4))
+                    .ToList();
 
                 // Check if there is any data in the last 4 hours
                 if (last4HoursData.Count == 0)
@@ -136,8 +140,45 @@ namespace AppDevCodingChallenge
                     Console.WriteLine("Average rainfall: \tGreen");
                 }
 
+
+                // Get the rainfall data for the last 4 hours
+                var rainfallTrend = last4HoursData
+                    .Select(x => (double)x.Rainfall)
+                    .ToList();
+
+                // Calculate the average rainfall for the last 4 hours
+                var currentAverage = rainfallTrend.Any() ? rainfallTrend.Average() : 0;
+
+                // Get data for the previous 4 hours
+                var previousRainfallTrend = group
+                    .Where(x => x.Time < assumedCurrentDateTime.AddHours(-4) && // Current 4-hour window
+                                x.Time >= assumedCurrentDateTime.AddHours(-8)) // Previous 4-hour window
+                    .Select(x => (double)x.Rainfall)
+                    .ToList();
+
+                // Calculate the average rainfall for the previous 4 hours
+                var previousAverage = previousRainfallTrend.Any() ? previousRainfallTrend.Average() : 0;
+
+                // Determine the rainfall trend
+                if (currentAverage > previousAverage)
+                {
+                    // Rainfall is increasing
+                    Console.WriteLine("Rainfall trend: \tIncreasing");
+                }
+                else if (currentAverage < previousAverage)
+                {
+                    // Rainfall is decreasing
+                    Console.WriteLine("Rainfall trend: \tDecreasing");
+                }
+                else
+                {
+                    // Rainfall is stable
+                    Console.WriteLine("Rainfall trend: \tStable");
+                }
+
                 // Display blank line for readability
                 Console.WriteLine();
+                
             }
 
 
