@@ -23,6 +23,9 @@ namespace AppDevCodingChallenge
             Console.WriteLine("Fuzion Inc");
             Console.WriteLine("Flood detection programme");
 
+            // Initialise and set the assumedCurrentTime to 2pm based on the latest data from data files.
+            DateTime assumedCurrentDateTime = new DateTime(2020, 6, 5, 14, 0, 0);
+
             // set up file and folder paths
             string devicesFilePath = "Data/devices.csv";
             string deviceReadingsFolderPath = "Data/Readings/";
