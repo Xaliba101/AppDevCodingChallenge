@@ -1,5 +1,7 @@
 ﻿using System.Formats.Asn1;
 using System.Globalization;
+using AppDevCodingChallenge.Models;
+using CsvHelper;
 
 namespace AppDevCodingChallenge
 {
@@ -50,7 +52,6 @@ namespace AppDevCodingChallenge
                 return;
             }
 
-            // Read Readings files and group by Device Id
             
 
 
