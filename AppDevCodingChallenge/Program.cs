@@ -1,4 +1,7 @@
-﻿namespace AppDevCodingChallenge
+﻿using System.Formats.Asn1;
+using System.Globalization;
+
+namespace AppDevCodingChallenge
 {
     internal class Program
     {
@@ -47,7 +50,8 @@
                 return;
             }
 
-
+            // Read Readings files and group by Device Id
+            
 
 
 
